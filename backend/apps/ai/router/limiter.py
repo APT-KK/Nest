@@ -1,10 +1,11 @@
-
 """Rate limiter for user requests using Redis."""
+
 from .client import RedisRouterClient
 
 
 class RateLimiter:
     """Limits the number of requests a user can make within a time window."""
+
     def __init__(self):
         """Initialize RateLimiter with Redis connection, limit, and window."""
         self.redis = RedisRouterClient().get_connection()
@@ -25,9 +26,9 @@ class RateLimiter:
                 self.redis.expire(key, self.window)
 
             # 3. Check limit
-            return not current_count > self.limit
-
-        except Exception:
+        except Exception:  # noqa: BLE001 - Intentional fail-open policy
             # RFC 3.1.3: Fail-Open
             # If Redis is down, do NOT block the user. Allow traffic.
             return True
+        else:
+            return not current_count > self.limit

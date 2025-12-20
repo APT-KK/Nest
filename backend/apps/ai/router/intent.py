@@ -1,5 +1,5 @@
-
 """Intent router for classifying user queries using spaCy and Redis cache."""
+
 import hashlib
 import json
 import logging
@@ -14,6 +14,7 @@ logger = logging.getLogger(__name__)
 
 class IntentRouter:
     """Router for classifying user queries as STATIC or DYNAMIC intents."""
+
     def __init__(self):
         """Initialize IntentRouter with Redis connection and spaCy model."""
         self.redis = RedisRouterClient().get_connection()
@@ -74,7 +75,7 @@ class IntentRouter:
             if cached_data:
                 logger.info("⚡ Intent Cache Hit: %s", cache_key)
                 return json.loads(cached_data)
-        except Exception as e:
+        except Exception as e:  # noqa: BLE001 - Intentional fail-open policy
             logger.warning("Redis Circuit Breaker Triggered: %s", e)
 
         # --- 2. SPACY PROCESSING ---
@@ -112,6 +113,7 @@ class IntentRouter:
 
         # --- 4. WRITE TO CACHE ---
         import contextlib
+
         with contextlib.suppress(Exception):
             self.redis.set(cache_key, json.dumps(result), ex=3600)
 
