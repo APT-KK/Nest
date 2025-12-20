@@ -9,7 +9,7 @@ load_dotenv()
 # RFC 3.1.3: Fail-Open Policy Configuration
 REDIS_CONFIG = {
     "host": os.getenv("REDIS_HOST", "localhost"),
-    "port": int(os.getenv("REDIS_PORT", 6379)),
+    "port": int(os.getenv("REDIS_PORT", "6379")),
     "username": os.getenv("REDIS_USER", "nest_router"),
     "password": os.getenv("REDIS_PASSWORD"),
     "decode_responses": True,
