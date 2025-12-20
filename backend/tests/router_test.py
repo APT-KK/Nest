@@ -1,7 +1,7 @@
 import json
 import sys
-import unittest
 from pathlib import Path
+import unittest
 from unittest.mock import MagicMock, patch
 
 sys.path.append(str(Path.cwd() / "backend"))
